@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EconomicGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,9 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
+
+Route::group( ['middleware' => ['auth']], function () {;
+    Route::resource('economic-groups', EconomicGroupController::class);
+});
 
 require __DIR__.'/auth.php';
