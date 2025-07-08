@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow sm:rounded-lg p-6">
-                <form method="POST" action="">
+                <form method="POST" action="{{ route('group.store') }}">
                     @csrf
 
                     <div class="mb-4">

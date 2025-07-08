@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreEconomicGroupRequest;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\View\View;
 
 class EconomicGroupController extends Controller
@@ -26,16 +27,13 @@ class EconomicGroupController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param StoreEconomicGroupRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreEconomicGroupRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
-        ]);
-
-        groups()->create($request->only(['name', 'description']));
+        //        dd($request->validated());
+        groups()->create($request->validated());
 
         return redirect()->route('groups.index')->with('success', 'Economic group created successfully.');
     }
