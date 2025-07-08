@@ -16,6 +16,7 @@ it('should be able to list economic groups', function () {
     $response = get(route('groups.index'));
     // Assert: check if the response is OK (HTTP status 200)
     $response->assertOk();
+
     // Check if the response contains the names of the economic groups
     foreach ($groups as $group) {
         $response->assertSee($group->name);
