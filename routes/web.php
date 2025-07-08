@@ -25,8 +25,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::group(['middleware' => ['auth']], function () {
-    ;
-    Route::resource('economic-groups', EconomicGroupController::class);
+    Route::get('groups', [EconomicGroupController::class, 'index'])->name('groups.index');
 });
 
 require __DIR__ . '/auth.php';
