@@ -14,11 +14,22 @@ it('should be able to list economic groups', function () {
     // Act: log in the user and make a GET request to the groups index route
     actingAs($user);
     $response = get(route('groups.index'));
-    // Assert: check if the response is OK (HTTP status 200)
+    // Assert: check if the response is OK (HTTP status 200) and contains the names of the economic groups
     $response->assertOk();
-
-    // Check if the response contains the names of the economic groups
     foreach ($groups as $group) {
         $response->assertSee($group->name);
     }
 });
+
+it('should be able to view create economic group page', function () {
+    // Arrange: create a user and some economic groups
+    $user   = User::factory()->create();
+    $groups = EconomicGroup::factory()->count(5)->create();
+    // Act: log in the user and make a GET request to the groups index route
+    actingAs($user);
+    $response = get(route('group.create'));
+    // Assert: check if the response is OK (HTTP status 200) and contains the text 'Add Economic Group'
+    $response->assertOk();
+    $response->assertSee('Create Economic Group');
+});
+

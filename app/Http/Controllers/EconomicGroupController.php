@@ -21,9 +21,7 @@ class EconomicGroupController extends Controller
      */
     public function create(): View
     {
-        return view('groups. create', [
-            'group' => groups()->make(),
-        ]);
+        return view('groups. create');
     }
 
     /**

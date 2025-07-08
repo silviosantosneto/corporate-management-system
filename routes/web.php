@@ -24,8 +24,11 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('groups', [EconomicGroupController::class, 'index'])->name('groups.index');
+    Route::group(['prefix' => 'group'], function () {;
+        Route::get('create', [EconomicGroupController::class, 'create'])->name('group.create');
+    });
 });
 
 require __DIR__ . '/auth.php';
