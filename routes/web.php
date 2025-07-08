@@ -24,9 +24,15 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::group(['middleware' => ['auth']], function () {
-    ;
-    Route::resource('economic-groups', EconomicGroupController::class);
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('groups', [EconomicGroupController::class, 'index'])->name('groups.index');
+    Route::group(['prefix' => 'group'], function () {
+        Route::get('create', [EconomicGroupController::class, 'create'])->name('group.create');
+        Route::post('store', [EconomicGroupController::class, 'store'])->name('group.store');
+        Route::get('{economic_groups}/edit', [EconomicGroupController::class, 'edit'])->name('group.edit');
+        Route::put('{economic_groups}', [EconomicGroupController::class, 'update'])->name('group.update');
+        Route::delete('{economic_groups}', [EconomicGroupController::class, 'destroy'])->name('group.destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';
