@@ -25,7 +25,7 @@ it('should be able to list economic groups', function () {
 it('should be able to view create economic group page', function () {
     // Arrange: create a user and some economic groups
     $user = User::factory()->create();
-    // Act: log in the user and make a GET request to the groups index route
+    // Act: log in the user and make a GET request to the groups create route
     actingAs($user);
     $response = get(route('group.create'));
     // Assert: check if the response is OK (HTTP status 200) and contains the text 'Add Economic Group'
@@ -37,7 +37,7 @@ it('should be able to create a new economic group', function () {
     // Arrange: create a user and some economic groups
     $user   = User::factory()->create();
     $groups = EconomicGroup::factory()->count(1)->create();
-    // Act: log in the user and make a GET request to the groups index route
+    // Act: log in the user and make a POST request to the groups store route
     actingAs($user);
     // Act: make a POST request to the group store route with the necessary data
     $response = $this->post(route('group.store'), [
@@ -51,10 +51,25 @@ it('should be able to view edit economic group page', function () {
     // Arrange: create a user and some economic groups
     $user   = User::factory()->create();
     $groups = EconomicGroup::factory()->count(1)->create();
-    // Act: log in the user and make a GET request to the groups index route
+    // Act: log in the user and make a GET request to the groups edit route
     actingAs($user);
     $response = get(route('group.edit', $groups->first()->id));
     // Assert: check if the response is OK (HTTP status 200) and contains the text 'Add Economic Group'
     $response->assertOk();
     $response->assertSee('Edit Economic Group');
+});
+
+it('should be able to update an economic group', function () {
+    // Arrange: create a user and some economic groups
+    $user  = User::factory()->create();
+    $group = EconomicGroup::factory()->create(['name' => 'Old Name']);
+    // Act: log in the user and make a PUT request to the groups update route
+    actingAs($user);
+    $response = $this->put(route('group.update', $group), [
+        'name' => 'Updated Name',
+    ]);
+    // Assert: check if the response redirects to the groups index route and the database has the updated name
+    $this->assertDatabaseHas('economic_groups', ['name' => 'Updated Name']);
+    $this->assertDatabaseMissing('economic_groups', ['name' => 'Old Name']);
+    $response->assertRedirect(route('groups.index'));
 });

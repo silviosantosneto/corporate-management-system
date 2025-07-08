@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEconomicGroupRequest;
 use App\Models\EconomicGroup;
-use Illuminate\Http\{RedirectResponse, Request};
+use Illuminate\Http\{RedirectResponse};
 use Illuminate\View\View;
 
 class EconomicGroupController extends Controller
@@ -33,7 +33,7 @@ class EconomicGroupController extends Controller
      */
     public function store(StoreEconomicGroupRequest $request): RedirectResponse
     {
-        //        dd($request->validated());
+
         groups()->create($request->validated());
 
         return redirect()->route('groups.index')->with('success', 'Economic group created successfully.');
@@ -50,19 +50,28 @@ class EconomicGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EconomicGroup $id): view
+    public function edit(EconomicGroup $economic_groups): view
     {
-        $this->authorize('update', $id);
+        $this->authorize('update', $economic_groups);
 
-        return view('groups.edit', ['group' => $id]);
+        return view('groups.edit', ['economic_groups' => $economic_groups]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EconomicGroup $economic_groups): RedirectResponse
     {
-        //
+        $this->authorize('update', $economic_groups);
+
+        request()->validate([
+            'name' => 'required|string|max:255|unique:economic_groups,name,' . $economic_groups->id,
+        ]);
+
+        $economic_groups->name = request()->name;
+        $economic_groups->save();
+
+        return redirect()->route('groups.index')->with('success', 'Economic group updated successfully.');
     }
 
     /**
