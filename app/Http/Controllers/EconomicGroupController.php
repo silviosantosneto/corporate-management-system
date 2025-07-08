@@ -77,8 +77,12 @@ class EconomicGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(EconomicGroup $economic_groups): RedirectResponse
     {
-        //
+        $this->authorize('delete', $economic_groups);
+
+        $economic_groups->delete();
+
+        return redirect()->route('groups.index')->with('success', 'Economic group deleted successfully.');
     }
 }

@@ -33,7 +33,7 @@
                                 <a href="{{ route('group.edit', $group) }}"
                                    class="text-blue-500 hover:underline">{{ __('Edit') }}</a>
 
-                                <form action="" method="POST" class="inline">
+                                <form action="{{ route('group.update', $group->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"

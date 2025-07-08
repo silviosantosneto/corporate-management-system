@@ -73,3 +73,17 @@ it('should be able to update an economic group', function () {
     $this->assertDatabaseMissing('economic_groups', ['name' => 'Old Name']);
     $response->assertRedirect(route('groups.index'));
 });
+
+it('should be able to delete an economic group', function () {
+    // Arrange: create a user and some economic groups
+    $user  = User::factory()->create();
+    $group = EconomicGroup::factory()->create();
+    // Act: log in the user and make a DELETE request to the groups destroy route
+    actingAs($user);
+
+    $id       = $group->id;
+    $response = $this->delete(route('group.destroy', $group));
+
+    $response->assertRedirect(route('groups.index'));
+    $this->assertDatabaseMissing('economic_groups', [$id]);
+});

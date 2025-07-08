@@ -17,10 +17,10 @@ class EconomicGroupPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    //    public function delete(User $user, EconomicGroup $economicGroup): bool
-    //    {
-    //        //
-    //    }
+    public function delete(User $user, EconomicGroup $group): bool
+    {
+        return true;
+    }
     //
     //    /**
     //     * Determine whether the user can permanently delete the model.

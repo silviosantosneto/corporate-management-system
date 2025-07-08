@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('store', [EconomicGroupController::class, 'store'])->name('group.store');
         Route::get('{economic_groups}/edit', [EconomicGroupController::class, 'edit'])->name('group.edit');
         Route::put('{economic_groups}', [EconomicGroupController::class, 'update'])->name('group.update');
+        Route::delete('{economic_groups}', [EconomicGroupController::class, 'destroy'])->name('group.destroy');
     });
 });
 
