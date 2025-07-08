@@ -30,7 +30,7 @@
                         <tr class="border-b">
                             <td class="px-4 py-2">{{ $group->name }}</td>
                             <td class="px-4 py-2 text-right space-x-2">
-                                <a href=" "
+                                <a href="{{ route('group.edit', $group) }}"
                                    class="text-blue-500 hover:underline">{{ __('Edit') }}</a>
 
                                 <form action="" method="POST" class="inline">

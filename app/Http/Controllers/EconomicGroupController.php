@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEconomicGroupRequest;
+use App\Models\EconomicGroup;
 use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\View\View;
 
@@ -49,9 +50,11 @@ class EconomicGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(EconomicGroup $id): view
     {
-        //
+        $this->authorize('update', $id);
+
+        return view('groups.edit', ['group' => $id]);
     }
 
     /**

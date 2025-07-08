@@ -46,3 +46,15 @@ it('should be able to create a new economic group', function () {
     // Assert: check if the response redirects to the groups index route with a success message
     $this->assertDatabaseHas('economic_groups', ['name' => 'Test Group']);
 });
+
+it('should be able to view edit economic group page', function () {
+    // Arrange: create a user and some economic groups
+    $user   = User::factory()->create();
+    $groups = EconomicGroup::factory()->count(1)->create();
+    // Act: log in the user and make a GET request to the groups index route
+    actingAs($user);
+    $response = get(route('group.edit', $groups->first()->id));
+    // Assert: check if the response is OK (HTTP status 200) and contains the text 'Add Economic Group'
+    $response->assertOk();
+    $response->assertSee('Edit Economic Group');
+});
