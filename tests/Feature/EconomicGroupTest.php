@@ -10,15 +10,15 @@ uses(RefreshDatabase::class);
 it('should be able to list economic groups', function () {
     // Arrange: create a user and some economic groups
     $user   = User::factory()->create();
-    $groups = EconomicGroup::factory()->count(5)->create();
+    $economicGroups = EconomicGroup::factory()->count(5)->create();
     // Act: log in the user and make a GET request to the groups index route
     actingAs($user);
     $response = get(route('groups.index'));
     // Assert: check if the response is OK (HTTP status 200) and contains the names of the economic groups
     $response->assertOk();
 
-    foreach ($groups as $group) {
-        $response->assertSee($group->name);
+    foreach ($economicGroups as $economicGroup) {
+        $response->assertSee($economicGroup->name);
     }
 });
 
@@ -36,11 +36,10 @@ it('should be able to view create economic group page', function () {
 it('should be able to create a new economic group', function () {
     // Arrange: create a user and some economic groups
     $user   = User::factory()->create();
-    $groups = EconomicGroup::factory()->count(1)->create();
     // Act: log in the user and make a POST request to the groups store route
     actingAs($user);
     // Act: make a POST request to the group store route with the necessary data
-    $response = $this->post(route('group.store'), [
+    $this->post(route('group.store'), [
         'name' => 'Test Group',
     ]);
     // Assert: check if the response redirects to the groups index route with a success message
@@ -50,10 +49,10 @@ it('should be able to create a new economic group', function () {
 it('should be able to view edit economic group page', function () {
     // Arrange: create a user and some economic groups
     $user   = User::factory()->create();
-    $groups = EconomicGroup::factory()->count(1)->create();
+    $economicGroup = EconomicGroup::factory()->create();
     // Act: log in the user and make a GET request to the groups edit route
     actingAs($user);
-    $response = get(route('group.edit', $groups->first()->id));
+    $response = get(route('group.edit', $economicGroup->first()->id));
     // Assert: check if the response is OK (HTTP status 200) and contains the text 'Add Economic Group'
     $response->assertOk();
     $response->assertSee('Edit Economic Group');
@@ -62,10 +61,10 @@ it('should be able to view edit economic group page', function () {
 it('should be able to update an economic group', function () {
     // Arrange: create a user and some economic groups
     $user  = User::factory()->create();
-    $group = EconomicGroup::factory()->create(['name' => 'Old Name']);
+    $economicGroup = EconomicGroup::factory()->create(['name' => 'Old Name']);
     // Act: log in the user and make a PUT request to the groups update route
     actingAs($user);
-    $response = $this->put(route('group.update', $group), [
+    $response = $this->put(route('group.update', $economicGroup), [
         'name' => 'Updated Name',
     ]);
     // Assert: check if the response redirects to the groups index route and the database has the updated name
@@ -77,12 +76,12 @@ it('should be able to update an economic group', function () {
 it('should be able to delete an economic group', function () {
     // Arrange: create a user and some economic groups
     $user  = User::factory()->create();
-    $group = EconomicGroup::factory()->create();
+    $economicGroup = EconomicGroup::factory()->create();
     // Act: log in the user and make a DELETE request to the groups destroy route
     actingAs($user);
 
-    $id       = $group->id;
-    $response = $this->delete(route('group.destroy', $group));
+    $id       = $economicGroup->id;
+    $response = $this->delete(route('group.destroy', $economicGroup));
 
     $response->assertRedirect(route('groups.index'));
     $this->assertDatabaseMissing('economic_groups', [$id]);
